@@ -1,171 +1,156 @@
-📦 Sistema de Gestión de Inventario y Pedidos
+# 📦 Sistema de Gestión de Inventario y Pedidos
 
-Sistema completo orientado a producción, diseñado como proyecto de portafolio profesional, freelancing y empleo formal.
+Sistema completo orientado a **producción**, diseñado como proyecto de **portafolio profesional**, **freelancing** y **empleo formal**.
 
-El proyecto implementa un backend en Python con arquitectura REST, una aplicación móvil en Flutter y un frontend web, simulando un entorno real de negocio para la gestión de inventario, pedidos, deudores y pagos.
+El proyecto implementa un **backend en Python** con arquitectura REST, una **aplicación móvil en Flutter** y un **frontend web**, simulando un entorno real de negocio para la gestión de inventario, pedidos, deudores y pagos.
 
-🎯 Objetivo del Proyecto
+---
+
+## 🎯 Objetivo del Proyecto
 
 Construir un sistema realista que demuestre habilidades en:
 
-Desarrollo backend profesional
+* Desarrollo backend profesional
+* Diseño de APIs REST
+* Manejo de bases de datos relacionales
+* Autenticación y autorización por roles
+* Consumo de APIs desde aplicaciones móviles y web
+* Buenas prácticas de arquitectura, seguridad y escalabilidad
 
-Diseño de APIs REST
+Este proyecto **no es un tutorial** ni un ejercicio académico: está pensado para representar un sistema que podría usarse en un negocio real.
 
-Manejo de bases de datos relacionales
+---
 
-Autenticación y autorización por roles
-
-Consumo de APIs desde aplicaciones móviles y web
-
-Buenas prácticas de arquitectura, seguridad y escalabilidad
-
-Este proyecto no es un tutorial ni un ejercicio académico: está pensado para representar un sistema que podría usarse en un negocio real.
-
-🧠 Arquitectura General
+## 🧠 Arquitectura General
 
 El sistema está compuesto por:
 
-Backend: API REST central
-
-Base de datos: Relacional
-
-Aplicación móvil: Flutter
-
-Frontend web: Panel administrativo
+* **Backend**: API REST central
+* **Base de datos**: Relacional
+* **Aplicación móvil**: Flutter
+* **Frontend web**: Panel administrativo
 
 Todos los clientes consumen la misma API, manteniendo una arquitectura desacoplada y escalable.
 
-🛠️ Tecnologías Utilizadas
-Backend
+---
 
-Python
+## 🛠️ Tecnologías Utilizadas
 
-FastAPI
+### Backend
 
-SQLAlchemy (ORM)
+* **Python**
+* **FastAPI**
+* **SQLAlchemy** (ORM)
+* **JWT** para autenticación
 
-JWT para autenticación
+### Base de Datos
 
-Base de Datos
+* **SQLite** (desarrollo)
+* Diseño preparado para **PostgreSQL** (producción)
 
-SQLite (desarrollo)
+### Mobile App
 
-Diseño preparado para PostgreSQL (producción)
+* **Flutter**
+* Consumo de API REST
 
-Mobile App
+### Web Frontend
 
-Flutter
+* HTML, CSS, JavaScript
+* Comunicación con API REST
 
-Consumo de API REST
+---
 
-Web Frontend
+## 👥 Roles del Sistema
 
-HTML, CSS, JavaScript
+### Usuario
 
-Comunicación con API REST
+* Registro e inicio de sesión
+* Visualización de productos
+* Creación de pedidos
+* Consulta del estado de pedidos
 
-👥 Roles del Sistema
-Usuario
+### Administrador
 
-Registro e inicio de sesión
+* Gestión de productos y categorías
+* Control de inventario
+* Gestión de pedidos
+* Registro y seguimiento de deudas
+* Registro de pagos
+* Visualización de reportes
 
-Visualización de productos
+---
 
-Creación de pedidos
+## 📦 Funcionalidades Principales
 
-Consulta del estado de pedidos
+* Autenticación segura con JWT
+* Sistema de roles y permisos
+* CRUD de productos y categorías
+* Control de stock en tiempo real
+* Flujo completo de pedidos
+* Manejo de deudores y pagos
+* Reportes básicos de negocio
 
-Administrador
+---
 
-Gestión de productos y categorías
+## 🔁 Flujos de Uso
 
-Control de inventario
+* Un usuario crea un pedido desde la app Flutter o la web
+* El backend valida el stock y registra el pedido
+* El administrador gestiona el pedido y el inventario
+* En caso de deuda, se registra y se da seguimiento
+* Los pagos se registran y actualizan el estado financiero
 
-Gestión de pedidos
+---
 
-Registro y seguimiento de deudas
+## 🔐 Seguridad y Buenas Prácticas
 
-Registro de pagos
+* Validación de datos en todos los endpoints
+* Protección de rutas según rol
+* Uso de variables de entorno
+* Manejo centralizado de errores
+* Separación clara de capas (API, lógica, datos)
 
-Visualización de reportes
+---
 
-📦 Funcionalidades Principales
-
-Autenticación segura con JWT
-
-Sistema de roles y permisos
-
-CRUD de productos y categorías
-
-Control de stock en tiempo real
-
-Flujo completo de pedidos
-
-Manejo de deudores y pagos
-
-Reportes básicos de negocio
-
-🔁 Flujos de Uso
-
-Un usuario crea un pedido desde la app Flutter o la web
-
-El backend valida el stock y registra el pedido
-
-El administrador gestiona el pedido y el inventario
-
-En caso de deuda, se registra y se da seguimiento
-
-Los pagos se registran y actualizan el estado financiero
-
-🔐 Seguridad y Buenas Prácticas
-
-Validación de datos en todos los endpoints
-
-Protección de rutas según rol
-
-Uso de variables de entorno
-
-Manejo centralizado de errores
-
-Separación clara de capas (API, lógica, datos)
-
-🚀 Despliegue
+## 🚀 Despliegue
 
 El sistema está diseñado para un despliegue económico y escalable:
 
-Backend desplegable en servicios cloud
+* Backend desplegable en servicios cloud
+* Base de datos migrable a PostgreSQL
+* Configuración por variables de entorno
 
-Base de datos migrable a PostgreSQL
+---
 
-Configuración por variables de entorno
+## 📄 Documentación
 
-📄 Documentación
-
-La API está documentada automáticamente mediante Swagger / OpenAPI, accesible desde el backend.
+La API está documentada automáticamente mediante **Swagger / OpenAPI**, accesible desde el backend.
 
 Además, el repositorio incluye:
 
-Diagramas conceptuales
+* Diagramas conceptuales
+* Explicación de la arquitectura
+* Descripción de entidades y relaciones
 
-Explicación de la arquitectura
+---
 
-Descripción de entidades y relaciones
-
-💼 Enfoque Profesional
+## 💼 Enfoque Profesional
 
 Este proyecto puede utilizarse para:
 
-Portafolio profesional
-
-Presentación a clientes freelancer
-
-Demostración técnica en entrevistas
-
-Base para sistemas reales de negocio
+* Portafolio profesional
+* Presentación a clientes freelancer
+* Demostración técnica en entrevistas
+* Base para sistemas reales de negocio
 
 Demuestra conocimientos en backend, frontend, móvil, bases de datos y arquitectura de software.
 
-📌 Nota
+---
 
-El proyecto se desarrolla inicialmente con SQLite por simplicidad, pero toda la arquitectura está pensada para migrar a PostgreSQL sin cambios estructurales.
+## 📌 Nota
+
+El proyecto se desarrolla inicialmente con **SQLite** por simplicidad, pero toda la arquitectura está pensada para migrar a **PostgreSQL** sin cambios estructurales.
+
+---
+
+⭐ Si este proyecto te resulta interesante o útil, no dudes en explorarlo y revisarlo.
