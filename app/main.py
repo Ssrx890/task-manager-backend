@@ -1,10 +1,28 @@
 from fastapi import FastAPI
-from .api.v1.auth import router as auth_router # Importar el router
-# ... (otros imports)
+from contextlib import asynccontextmanager
 
-app = FastAPI(title=settings.PROJECT_NAME, lifespan=lifespan)
+# --- IMPORTACIONES CLAVE ---
+from .core.config import settings      # <--- ESTA ES LA QUE TE FALTA
+from .database import create_db_and_tables
+from .api.v1.auth import router as auth_router
+from .models.user import User          # Importante para que SQLModel vea la tabla
+# ---------------------------
 
-# Registrar las rutas de autenticación
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Acciones al iniciar
+    print("Iniciando aplicación: Creando tablas...")
+    create_db_and_tables()
+    yield
+    # Acciones al cerrar
+    print("Cerrando aplicación...")
+
+app = FastAPI(
+    title=settings.PROJECT_NAME, # Aquí es donde fallaba porque no encontraba 'settings'
+    lifespan=lifespan
+)
+
+# Rutas
 app.include_router(auth_router)
 
 @app.get("/")
