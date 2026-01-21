@@ -1,17 +1,30 @@
 from typing import Optional
 from sqlmodel import SQLModel, Field
 
-# Esquema base que comparten la BD y la API
+# Esquema base: campos comunes
 class UserBase(SQLModel):
     email: str = Field(unique=True, index=True)
     full_name: str
-    role: str = "SELLER"  # Roles: ADMIN, SELLER
+    role: str = "SELLER"  # Valores: ADMIN, SELLER
 
-# Cómo se guarda en la base de datos (con contraseña hashed)
+# Tabla de la base de datos
 class User(UserBase, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     hashed_password: str
 
-# Qué devuelve la API al crear un usuario (nunca devolvemos la contraseña)
+# Esquema para crear usuario (aquí sí pedimos password)
+class UserCreate(UserBase):
+    password: str
+
+# Esquema para responder a la API (ocultamos el password)
 class UserResponse(UserBase):
     id: int
+
+# Esquemas para el Token JWT
+class Token(SQLModel):
+    access_token: str
+    token_type: str = "bearer"
+
+class TokenData(SQLModel):
+    email: Optional[str] = None
+    role: Optional[str] = None

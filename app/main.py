@@ -1,29 +1,12 @@
 from fastapi import FastAPI
-from contextlib import asynccontextmanager
+from .api.v1.auth import router as auth_router # Importar el router
+# ... (otros imports)
 
-from .database import create_db_and_tables
-from .core.config import settings
+app = FastAPI(title=settings.PROJECT_NAME, lifespan=lifespan)
 
-# ⚠️ Importante: para que SQLModel registre las tablas
-from .models.user import User  
-
-
-@asynccontextmanager
-async def lifespan(app: FastAPI):
-    print("Iniciando aplicación: Creando tablas...")
-    create_db_and_tables()
-    yield
-    print("Cerrando aplicación: Limpiando recursos...")
-
-
-app = FastAPI(
-    title=settings.PROJECT_NAME,
-    lifespan=lifespan,
-)
-
+# Registrar las rutas de autenticación
+app.include_router(auth_router)
 
 @app.get("/")
 def home():
-    return {
-        "message": "API de Inventario Pro activa y usando Lifespan Events"
-    }
+    return {"message": "API de Inventario Pro activa"}
