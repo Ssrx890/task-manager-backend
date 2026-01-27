@@ -10,5 +10,4 @@ class Settings(BaseSettings):
     class Config:
         env_file = ".env"
 
-# ¡ESTA LÍNEA ES LA QUE FALTA O ESTÁ MAL ESCRITA!
 settings = Settings()
