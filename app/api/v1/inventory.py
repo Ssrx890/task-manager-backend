@@ -2,7 +2,7 @@ from typing import List
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlmodel import Session, select
 from app.database import get_session
-from app.api.v1.deps import get_current_user
+from app.api.deps import get_current_user
 from app.models.user import User
 from app.models.inventory import Product, ProductCreate, Category, CategoryCreate
 

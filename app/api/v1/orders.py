@@ -1,63 +1,67 @@
-from fastapi import APIRouter, Depends, HTTPException
-from sqlmodel import Session, select
+from typing import List, Optional
+from fastapi import APIRouter, Depends, HTTPException, Query
+from sqlmodel import Session
 from app.database import get_session
-from app.models.orders import Order, OrderItem
-from app.models.inventory import Product
-from app.api.v1.deps import get_current_user
+from app.api.deps import get_current_user
 from app.models.user import User
-from typing import List
+from app.models.inventory import Product
+from app.models.orders import Order, OrderItem
+from app.models.finance import Debt
 
 router = APIRouter(prefix="/orders", tags=["Ventas"])
 
 @router.post("/")
 def create_order(
-    items_data: List[dict], # Formato: [{"product_id": 1, "quantity": 2}]
+    items_data: List[dict], 
+    payment_type: str = Query("CASH", description="CASH o CREDIT"),
+    customer_name: Optional[str] = Query(None, description="Nombre si es crédito"),
     current_user: User = Depends(get_current_user), 
     session: Session = Depends(get_session)
 ):
-    """
-    Proceso de Venta Profesional:
-    1. Crea la cabecera del pedido.
-    2. Valida stock de cada producto.
-    3. Descuenta stock y crea el detalle.
-    4. Si algo falla, hace Rollback automático.
-    """
+    # Validación de Arquitecto: Si es crédito, el nombre es OBLIGATORIO
+    if payment_type == "CREDIT" and not customer_name:
+        raise HTTPException(
+            status_code=400, 
+            detail="Para ventas a crédito, el nombre del cliente es obligatorio."
+        )
+
     try:
         new_order = Order(user_id=current_user.id)
         session.add(new_order)
-        session.flush() # Para obtener el ID de la orden sin confirmar cambios aún
+        session.flush() 
 
         running_total = 0.0
-
         for item in items_data:
             product = session.get(Product, item["product_id"])
-            
-            if not product:
-                raise HTTPException(status_code=404, detail=f"Producto ID {item['product_id']} no existe")
-            
-            if product.stock < item["quantity"]:
-                raise HTTPException(status_code=400, detail=f"Stock insuficiente para {product.name}")
+            if not product or product.stock < item["quantity"]:
+                raise HTTPException(status_code=400, detail="Stock insuficiente")
 
-            # Lógica financiera y de stock
             subtotal = product.price * item["quantity"]
             running_total += subtotal
-            product.stock -= item["quantity"] # Descuento de inventario
+            product.stock -= item["quantity"]
 
-            order_detail = OrderItem(
-                order_id=new_order.id,
-                product_id=product.id,
-                quantity=item["quantity"],
-                unit_price=product.price
+            detail = OrderItem(
+                order_id=new_order.id, product_id=product.id,
+                quantity=item["quantity"], unit_price=product.price
             )
-            session.add(order_detail)
+            session.add(detail)
             session.add(product)
 
         new_order.total = running_total
-        session.commit()
-        session.refresh(new_order)
         
-        return {"status": "Venta exitosa", "order_id": new_order.id, "total": new_order.total}
+        # Lógica de Deuda con Nombre
+        if payment_type == "CREDIT":
+            new_debt = Debt(
+                order_id=new_order.id,
+                customer_name=customer_name, # Guardamos el nombre
+                total_amount=running_total,
+                balance=running_total
+            )
+            session.add(new_debt)
+
+        session.commit()
+        return {"status": "Venta exitosa", "cliente": customer_name, "total": running_total}
 
     except Exception as e:
-        session.rollback() # Seguridad total: si algo falla, no se toca el stock
+        session.rollback()
         raise e
