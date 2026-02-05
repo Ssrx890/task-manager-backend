@@ -24,7 +24,7 @@ class Product(SQLModel, table=True):
     stock: int = Field(default=0)
     
     category_id: Optional[int] = Field(default=None, foreign_key="category.id")
-
+    image_url: Optional[str] = Field(default=None)
     category: Optional[Category] = Relationship(back_populates="products")
 
 class ProductCreate(SQLModel):

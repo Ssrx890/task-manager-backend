@@ -8,6 +8,7 @@ from app.models.inventory import Product
 from app.models.orders import Order, OrderItem
 from app.models.finance import Debt
 
+
 router = APIRouter(prefix="/orders", tags=["Ventas"])
 
 @router.post("/")
